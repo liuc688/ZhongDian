@@ -10,7 +10,8 @@ const isProd = process.env.NODE_ENV === 'production'
 // const gateway_basic = "gateway.vm64.suncoolnet.cn"
 // const gateway_basic = "gateway.vm253.suncoolnet.cn"
 // const gateway_basic = "gateway.vm42.suncoolnet.cn"
-const gateway_basic = "console.jiamingkaifaqu.com"
+// const gateway_basic = "console.jiamingkaifaqu.com"
+const gateway_basic = "jiaming.vm68.suncoolnet.cn"
 
 module.exports = {
 	lintOnSave: process.env.NODE_ENV === 'development',
@@ -23,14 +24,14 @@ module.exports = {
 		},
 		proxy: {
 			"/api": {
-				target: `https://${gateway_basic}/`,
+				target: `http://${gateway_basic}/`,
 				changeOrigin: true,
 				pathRewrite: {
 					// '^/api': ''
 				}
 			},
 			"/resources": {
-				target: `https://${gateway_basic}/`,
+				target: `http://${gateway_basic}/`,
 				changeOrigin: true,
 				pathRewrite: {
 					'^/resources': '/resources'

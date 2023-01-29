@@ -97,11 +97,11 @@
             <div class="ProductsAndTrends">
               <a class="product active1">
                 <span class="icons icons1"></span>
-                产品走势
+                营业额走势
               </a>
               <a class="energyConsumption">
                 <span class="icons icons2"></span>
-                能耗走势
+                纳税走势
               </a>
             </div>
           </div>
@@ -335,7 +335,17 @@
   </div>
 </template>
 <script>
+
 import axios from "axios"
+import {
+  year_yingyee,
+  year_nashui,
+  industry_count,
+  manage_scale,
+  address,
+  company_amount,  // 数读嘉明
+  company_contrast,  // 明星企业
+} from "@/services/largeScreen"
 export default {
   created(){
     this.setTime();
@@ -367,6 +377,8 @@ export default {
     this.dituArea();
     // 企业提示框（只是一开始的时候加载一次）
     this.qiyetiui();
+    // 明星企业渲染数据
+    this.myxyqiye();
   },
   data(){
     return {
@@ -513,8 +525,9 @@ export default {
     },
     // 营业额走势图
     yyyee() {
-      var yearYyyeeUrl='http://jiaming.vm68.suncoolnet.cn/api/manage/year/yingyee'
-      axios.post(yearYyyeeUrl).then(function (res) {
+      // var yearYyyeeUrl='http://jiaming.vm68.suncoolnet.cn/api/manage/year/yingyee'
+      // axios.post(yearYyyeeUrl).then(function (res) {
+      year_yingyee().then(function (res) {
         const yyyeeList = res.data.data;
         var yyyeeId = [];
         var yyyeeCount = [];
@@ -610,7 +623,8 @@ export default {
         });
       })
       setInterval(() => {
-        axios.post(yearYyyeeUrl).then(function (res) {
+        // axios.post(yearYyyeeUrl).then(function (res) {
+        year_yingyee().then(function (res) {
           const yyyeeList = res.data.data;
           var yyyeeId = [];
           var yyyeeCount = [];
@@ -709,8 +723,9 @@ export default {
     },
     // 纳税折线图
     nashui() {
-      var yearNashuiUrl='http://jiaming.vm68.suncoolnet.cn/api/manage/year/nashui'
-      axios.post(yearNashuiUrl).then(function (res) {
+      // var yearNashuiUrl='http://jiaming.vm68.suncoolnet.cn/api/manage/year/nashui'
+      // axios.post(yearNashuiUrl).then(function (res) {
+      year_nashui().then(function (res) {
         const yearNashuiList = res.data.data;
         var yearNashuiId = [];
         var yearNashuiCount = [];
@@ -843,7 +858,8 @@ export default {
         });
       })
       setInterval(() => {
-        axios.post(yearNashuiUrl).then(function (res) {
+        // axios.post(yearNashuiUrl).then(function (res) {
+        year_nashui().then(function (res) {
           const yearNashuiList = res.data.data;
           var yearNashuiId = [];
           var yearNashuiCount = [];
@@ -979,9 +995,9 @@ export default {
     // 营业额走势图（复制）
     yyyeeCopy() {
       // let myChart = echarts.init(document.querySelector(".detailsOne .lpboArea1 .detailsOneContentThree"));
-      var yearYyyeeUrl='http://jiaming.vm68.suncoolnet.cn/api/manage/year/yingyee'
-      // var addressYyyeeUrl='http://gateway.vm68.suncoolnet.cn/company/yingyee/enterprise'
-      axios.post(yearYyyeeUrl).then(function (res) {
+      // var yearYyyeeUrl='http://jiaming.vm68.suncoolnet.cn/api/manage/year/yingyee'
+      // axios.post(yearYyyeeUrl).then(function (res) {
+      year_yingyee().then(function (res) {
         const yyyeeList = res.data.data;
         var yyyeeId = [];
         var yyyeeCount = [];
@@ -1077,7 +1093,8 @@ export default {
         });
       })
       setInterval(() => {
-        axios.post(yearYyyeeUrl).then(function (res) {
+        // axios.post(yearYyyeeUrl).then(function (res) {
+        year_yingyee().then(function (res) {
           const yyyeeList = res.data.data;
           var yyyeeId = [];
           var yyyeeCount = [];
@@ -1177,8 +1194,9 @@ export default {
     // 行业分布模块（3d 饼状图）
     hhyeffbu() {
       var industryArrs = [];
-      var industryUrl = 'http://jiaming.vm68.suncoolnet.cn/api/manage/industry/count'
-      axios.post(industryUrl).then(function (res) {
+      // var industryUrl = 'http://jiaming.vm68.suncoolnet.cn/api/manage/industry/count'
+      // axios.post(industryUrl).then(function (res) {
+      industry_count().then(function (res) {
         const industryContentList = res.data.data;
         for (let i=0;i<industryContentList.length;i++) {
           industryArrs[i] = [industryContentList[i].id,parseInt(industryContentList[i].count)]
@@ -1241,7 +1259,8 @@ export default {
         });
       })
       setInterval(() => {
-        axios.post(industryUrl).then(function (res) {
+        // axios.post(industryUrl).then(function (res) {
+        industry_count().then(function (res) {
           const industryContentList = res.data.data;
           for (let i=0;i<industryContentList.length;i++) {
             industryArrs[i] = [industryContentList[i].id,parseInt(industryContentList[i].count)]
@@ -1308,8 +1327,9 @@ export default {
     // 规模分布模块（3d 饼状图）
     gvmoffbu() {
       var scaleArrs = [];
-      var scaleUrl = 'http://jiaming.vm68.suncoolnet.cn/api/company/manage/scale'
-      axios.post(scaleUrl).then(function (res) {
+      // var scaleUrl = 'http://jiaming.vm68.suncoolnet.cn/api/company/manage/scale'
+      // axios.post(scaleUrl).then(function (res) {
+      manage_scale().then(function (res) {
         const scaleContentList = res.data.data;
         for (let i=0;i<scaleContentList.length;i++) {
           scaleArrs[i] = [scaleContentList[i]._id,parseInt(scaleContentList[i].count)]
@@ -1363,7 +1383,8 @@ export default {
         });
       })
       setInterval(() => {
-        axios.post(scaleUrl).then(function (res) {
+        // axios.post(scaleUrl).then(function (res) {
+        manage_scale().then(function (res) {
           const scaleContentList = res.data.data;
           for (let i=0;i<scaleContentList.length;i++) {
             scaleArrs[i] = [scaleContentList[i]._id,parseInt(scaleContentList[i].count)]
@@ -1420,8 +1441,9 @@ export default {
     // 行业分布模块（3d 饼状图）（复制）
     hhyeffbuCopy() {
       let industryArrs = [];
-      var industryUrl = 'http://jiaming.vm68.suncoolnet.cn/api/manage/industry/count'
-      axios.post(industryUrl).then(function (res) {
+      // var industryUrl = 'http://jiaming.vm68.suncoolnet.cn/api/manage/industry/count'
+      // axios.post(industryUrl).then(function (res) {
+      industry_count().then(function (res) {
         const industryContentList = res.data.data;
         for (let i=0;i<industryContentList.length;i++) {
           industryArrs[i] = [industryContentList[i].id,industryContentList[i].count]
@@ -1484,7 +1506,8 @@ export default {
         });
       })
       setInterval(() => {
-        axios.post(industryUrl).then(function (res) {
+        // axios.post(industryUrl).then(function (res) {
+        industry_count().then(function (res) {
           const industryContentList = res.data.data;
           for (let i=0;i<industryContentList.length;i++) {
             industryArrs[i] = [industryContentList[i].id,industryContentList[i].count]
@@ -1595,8 +1618,9 @@ export default {
     },
     // 数读嘉明
     uudujwmy(){
-      var uuduurl = 'http://jiaming.vm68.suncoolnet.cn/api/manage/company/amount'
-      axios.post(uuduurl).then(function (res) {
+      // var uuduurl = 'http://jiaming.vm68.suncoolnet.cn/api/manage/company/amount'
+      // axios.post(uuduurl).then(function (res) {
+      company_amount().then(function (res) {
         const FourValues = res.data.data;
         let chanzhi = (FourValues.chanzhi/10000).toFixed(2)
         let lirun = (FourValues.lirun/10000).toFixed(2)
@@ -1609,8 +1633,9 @@ export default {
       })
       // 数读嘉明
       setInterval(() => {
-        var uuduurl = 'http://jiaming.vm68.suncoolnet.cn/api/manage/company/amount'
-        axios.post(uuduurl).then(function (res) {
+        // var uuduurl = 'http://jiaming.vm68.suncoolnet.cn/api/manage/company/amount'
+        // axios.post(uuduurl).then(function (res) {
+        company_amount().then(function (res) {
           const FourValues = res.data.data;
           let chanzhi = (FourValues.chanzhi/10000).toFixed(2)
           let lirun = (FourValues.lirun/10000).toFixed(2)
@@ -1672,6 +1697,68 @@ export default {
     rollStop(){
       clearInterval(this.timer2);
     },
+    // 给明星企业渲染数据
+    myxyqiye(){
+      // var myxyqiyeUrl='http://jiaming.vm68.suncoolnet.cn/api/manage/company/contrast'
+      // axios.post(myxyqiyeUrl).then(function (res) {
+      company_contrast().then(function (res) {
+        var myxyList = res.data.data;
+        // $("#comment1").html("")
+        console.log(document.querySelectorAll("#comment1 li"))
+        for(let i=0;i<myxyList.length;i++) {
+          const myxyIndex = i + 1;
+          document.querySelectorAll("#comment1 li")[i].querySelectorAll("span")[0].innerHTML = myxyIndex
+          document.querySelectorAll("#comment1 li")[i].querySelectorAll("span")[1].innerHTML = myxyList[i].id.title
+          document.querySelectorAll("#comment1 li")[i].querySelectorAll("span")[2].innerHTML = myxyList[i].count.toFixed(1)
+          document.querySelectorAll("#comment1 li")[i].querySelectorAll("span")[3].innerHTML = myxyList[i].contrast.toFixed(1)
+          // var lis = $("<li><span>"+myxyIndex+"</span><span>"+myxyList[i].id.title+"</span><span>"+(myxyList[i].count).toFixed(1)+"</span><span>"+(myxyList[i].contrast).toFixed(1)+"</span></li>")
+          // $("#comment1").append(lis);
+        }
+        // ul1 就是 id 为 comment1 的 ul 标签
+        var ul1 = document.querySelector("#comment1");
+        // ul2 就是 id 为 comment2 的 ul 标签
+        var ul2 = document.querySelector("#comment2");
+        // ulbox 是 div 标签
+        // var ulbox = document.querySelector(".famousEnterpriseListContent");
+        // ul2 标签中的内容（innerHTML） 和 ul1 标签中的内容（innerHTML）一样
+        /* 
+        思考一下，为什么这里要创建一个里面的内容完全和 ul1 一样的 ul2 呢？
+        解答：其实是这样的，为了防止滚动高度突然变零，会造成突然性的跳转，这里创建一个 ul2，滚动效果会更加的丝滑
+        */
+        ul2.innerHTML = ul1.innerHTML;
+        // scrollTop 表示滚动的高度，这里表示 ulbox 盒子最开始的时候滚动的高度为 0，也就是没有滚动
+      })
+      // 一天更新一次
+      setInterval(() => {
+        company_contrast().then(function (res) {
+          var myxyList = res.data.data;
+          // $("#comment1").html("")
+          console.log(document.querySelectorAll("#comment1 li"))
+          for(let i=0;i<myxyList.length;i++) {
+            const myxyIndex = i + 1;
+            document.querySelectorAll("#comment1 li")[i].querySelectorAll("span")[0].innerHTML = myxyIndex
+            document.querySelectorAll("#comment1 li")[i].querySelectorAll("span")[1].innerHTML = myxyList[i].id.title
+            document.querySelectorAll("#comment1 li")[i].querySelectorAll("span")[2].innerHTML = myxyList[i].count.toFixed(1)
+            document.querySelectorAll("#comment1 li")[i].querySelectorAll("span")[3].innerHTML = myxyList[i].contrast.toFixed(1)
+            // var lis = $("<li><span>"+myxyIndex+"</span><span>"+myxyList[i].id.title+"</span><span>"+(myxyList[i].count).toFixed(1)+"</span><span>"+(myxyList[i].contrast).toFixed(1)+"</span></li>")
+            // $("#comment1").append(lis);
+          }
+          // ul1 就是 id 为 comment1 的 ul 标签
+          var ul1 = document.querySelector("#comment1");
+          // ul2 就是 id 为 comment2 的 ul 标签
+          var ul2 = document.querySelector("#comment2");
+          // ulbox 是 div 标签
+          // var ulbox = document.querySelector(".famousEnterpriseListContent");
+          // ul2 标签中的内容（innerHTML） 和 ul1 标签中的内容（innerHTML）一样
+          /* 
+          思考一下，为什么这里要创建一个里面的内容完全和 ul1 一样的 ul2 呢？
+          解答：其实是这样的，为了防止滚动高度突然变零，会造成突然性的跳转，这里创建一个 ul2，滚动效果会更加的丝滑
+          */
+          ul2.innerHTML = ul1.innerHTML;
+          // scrollTop 表示滚动的高度，这里表示 ulbox 盒子最开始的时候滚动的高度为 0，也就是没有滚动
+        })
+      },86400000)
+    },
     // 地图区域
     dituArea(){
       // GL 版命名空间为 BMapGL
@@ -1685,10 +1772,11 @@ export default {
       let imgRedBig = require("./imgs/myIcon2.png")
       var myIcon1 = new BMapGL.Icon(imgBlue, new BMapGL.Size(36,36));
       var myIcon2 = new BMapGL.Icon(imgRedBig, new BMapGL.Size(128,128));
-      var addressUrl = 'http://jiaming.vm68.suncoolnet.cn/api/company/address'
+      // var addressUrl = 'http://jiaming.vm68.suncoolnet.cn/api/company/address'
       var addressArr = []
       var addressArrTrue = []
-      axios.post(addressUrl).then(function (res) {
+      // axios.post(addressUrl).then(function (res) {
+      address().then(function (res) {
         addressArr = res.data.data
         for(let i=0;i<addressArr.length;i++) {
           if(addressArr[i].longitude !== "None" && addressArr[i].latitude !== "None" && addressArr[i].manage) {
@@ -1722,7 +1810,6 @@ export default {
             var addressArrTrueDate = []
             var addressArrTureYyYee = []
             var addressArrTureNaShui = []
-            console.log("00000000",addressArrTrue[addressIndex])
             var addressArrTrueItem = addressArrTrue[addressIndex];
             for(let j=0;j<addressArrTrueItem.nashui.length;j++) {
               addressArrTrueDate.push(addressArrTrueItem.nashui[j]._id)
@@ -3120,7 +3207,6 @@ export default {
       map.setMapStyleV2({
         styleJson: myStyleJson2
       });
-
     },
     // 企业提示框（只是一开始的时候加载一次）
     qiyetiui() {
